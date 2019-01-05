@@ -8,6 +8,7 @@
 
 #import <objc/runtime.h>
 #import <libkern/OSAtomic.h>
+@import DeepDatago;
 
 #if TARGET_OS_IPHONE
   // Note: You may need to add the CFNetwork Framework to your project
@@ -2477,7 +2478,26 @@ enum XMPPStreamConfig
 	
 	NSString *outgoingStr = [iq compactXMLString];
 	NSData *outgoingData = [outgoingStr dataUsingEncoding:NSUTF8StringEncoding];
-	
+    // [CRYPTO_TALK] encrypt nick name
+    NSArray *strArray = [outgoingStr componentsSeparatedByString:@"<NICKNAME>"];
+    if ([strArray count] > 1) {
+        NSString *newStr = [strArray objectAtIndex:0];
+        NSString *newStr2 = [strArray objectAtIndex:1];
+
+        NSArray *strArray2 = [newStr2 componentsSeparatedByString:@"</NICKNAME>"];
+        NSString *nickName = [strArray2 objectAtIndex:0];
+        DeepDatagoManager *deepDatagoManager = [DeepDatagoManager sharedInstance];
+        NSString *aesKeyForAllFriends = [deepDatagoManager getPasswordForAllFriends];
+        NSString *encryptedNick = [CryptoManager encryptStringWithSymmetricKeyWithKey:aesKeyForAllFriends input:nickName];
+        outgoingStr = [NSString stringWithFormat:@"%@<NICKNAME>%@</NICKNAME>%@", newStr, encryptedNick, [strArray2 objectAtIndex:1]];
+    }
+    NSArray *strArray3 = [outgoingStr componentsSeparatedByString:@"nickqipa"];
+    if ([strArray3 count] > 1) {
+        XMPPLogSend(@"continueSendIQ: SEND: %@", outgoingStr);
+    }
+
+    // [CRYPTO_TALK] encrypt nick name end
+
     XMPPLogSend(@"continueSendIQ: SEND: %@", outgoingStr);
 	numberOfBytesSent += [outgoingData length];
 	
