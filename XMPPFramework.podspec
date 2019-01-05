@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
 	  ss.libraries = 'xml2', 'resolv'
 	  ss.frameworks = 'CoreData', 'SystemConfiguration', 'CoreLocation'
 	  ss.xcconfig = {
-	    'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2 $(SDKROOT)/usr/include/libresolv',
+	    'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2 $(SDKROOT)/usr/include/libresolv', 'FRAMEWORK_SEARCH_PATHS' => '$(PODS_ROOT)/../Carthage/Build/iOS'
 	  }
     ss.resources = [ 'Extensions/**/*.{xcdatamodel,xcdatamodeld}']
 	  ss.dependency 'CocoaLumberjack' # Skip pinning version because of the awkward 2.x->3.x transition
