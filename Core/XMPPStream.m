@@ -2487,8 +2487,9 @@ enum XMPPStreamConfig
         NSArray *strArray2 = [newStr2 componentsSeparatedByString:@"</NICKNAME>"];
         NSString *nickName = [strArray2 objectAtIndex:0];
         DeepDatagoManager *deepDatagoManager = [DeepDatagoManager sharedInstance];
-        NSString *aesKeyForAllFriends = [deepDatagoManager getPasswordForAllFriends];
-        NSString *encryptedNick = [CryptoManager encryptStringWithSymmetricKeyWithKey:aesKeyForAllFriends input:nickName];
+        CryptoManager *cryptoManager = [CryptoManager sharedInstance];
+        NSString *aesKeyForAllFriends = [deepDatagoManager getSharedKeyForAllFriends];
+        NSString *encryptedNick = [cryptoManager encryptStringWithSymmetricKeyWithKey:aesKeyForAllFriends input:nickName];
         outgoingStr = [NSString stringWithFormat:@"%@<NICKNAME>%@</NICKNAME>%@", newStr, encryptedNick, [strArray2 objectAtIndex:1]];
     }
     NSArray *strArray3 = [outgoingStr componentsSeparatedByString:@"nickqipa"];
