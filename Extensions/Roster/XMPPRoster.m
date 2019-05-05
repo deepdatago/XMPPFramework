@@ -645,16 +645,18 @@ enum XMPPRosterFlags
 	// Send presence response
 	// 
 	// <presence to="bareJID" type="subscribed"/>
-	
+
+    // [CRYPTO_TALK] first call addUser to send out "subscribe" presense.  This is to fix problem that android received the wrong presence order and displed pending approval message.
+    // Add optionally add user to our roster
+    if (flag)
+    {
+        [self addUser:jid withNickname:nil];
+    }
+    // [CRYPTO_TALK] end first call addUser to send out "subscribe" presense.  This is to fix problem that android received the wrong presence order and displed pending approval message.
+
 	XMPPPresence *presence = [XMPPPresence presenceWithType:@"subscribed" to:[jid bareJID]];
 	[xmppStream sendElement:presence];
 	
-	// Add optionally add user to our roster
-	
-	if (flag)
-	{
-		[self addUser:jid withNickname:nil];
-	}
 }
 
 - (void)rejectPresenceSubscriptionRequestFrom:(XMPPJID *)jid
