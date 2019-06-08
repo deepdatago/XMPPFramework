@@ -91,8 +91,11 @@ typedef SCNetworkConnectionFlags SCNetworkReachabilityFlags;
 		config = kAutoReconnect;
 		
 		reconnectDelay = DEFAULT_XMPP_RECONNECT_DELAY;
-		reconnectTimerInterval = DEFAULT_XMPP_RECONNECT_TIMER_INTERVAL;
-		
+		// [CRYPTO_TALK] set reconnect time internval from 20.0 to 3.0
+        // reconnectTimerInterval = DEFAULT_XMPP_RECONNECT_TIMER_INTERVAL;
+        reconnectTimerInterval = 3.0;
+        // [CRYPTO_TALK] END set reconnect time internval from 20.0 to 3.0
+
 		reconnectTicket = 0;
 		
 		previousReachabilityFlags = IMPOSSIBLE_REACHABILITY_FLAGS;
